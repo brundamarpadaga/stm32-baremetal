@@ -1,0 +1,1347 @@
+
+baremetal-blinky.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .isr_vector   000001f8  08000000  08000000  00001000  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .text         000006b0  080001f8  080001f8  000011f8  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .rodata       00000054  080008a8  080008a8  000018a8  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  3 .ARM.extab    00000000  080008fc  080008fc  00002004  2**0
+                  CONTENTS, READONLY
+  4 .ARM          00000008  080008fc  080008fc  000018fc  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  5 .preinit_array 00000000  08000904  08000904  00002004  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .init_array   00000004  08000904  08000904  00001904  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  7 .fini_array   00000004  08000908  08000908  00001908  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  8 .data         00000004  20000000  0800090c  00002000  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .bss          000004d8  20000004  08000910  00002004  2**2
+                  ALLOC
+ 10 ._user_heap_stack 00000604  200004dc  08000910  000024dc  2**0
+                  ALLOC
+ 11 .ARM.attributes 0000002e  00000000  00000000  00002004  2**0
+                  CONTENTS, READONLY
+ 12 .debug_info   00002ac2  00000000  00000000  00002032  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 13 .debug_abbrev 0000074b  00000000  00000000  00004af4  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 14 .debug_aranges 00000320  00000000  00000000  00005240  2**3
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 15 .debug_rnglists 0000024c  00000000  00000000  00005560  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 16 .debug_macro  00025b72  00000000  00000000  000057ac  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 17 .debug_line   0000326c  00000000  00000000  0002b31e  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 18 .debug_str    000ebaf2  00000000  00000000  0002e58a  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 19 .comment      00000043  00000000  00000000  0011a07c  2**0
+                  CONTENTS, READONLY
+ 20 .debug_frame  00000b48  00000000  00000000  0011a0c0  2**2
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 21 .debug_line_str 0000006c  00000000  00000000  0011ac08  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+
+Disassembly of section .text:
+
+080001f8 <__do_global_dtors_aux>:
+ 80001f8:	b510      	push	{r4, lr}
+ 80001fa:	4c05      	ldr	r4, [pc, #20]	@ (8000210 <__do_global_dtors_aux+0x18>)
+ 80001fc:	7823      	ldrb	r3, [r4, #0]
+ 80001fe:	b933      	cbnz	r3, 800020e <__do_global_dtors_aux+0x16>
+ 8000200:	4b04      	ldr	r3, [pc, #16]	@ (8000214 <__do_global_dtors_aux+0x1c>)
+ 8000202:	b113      	cbz	r3, 800020a <__do_global_dtors_aux+0x12>
+ 8000204:	4804      	ldr	r0, [pc, #16]	@ (8000218 <__do_global_dtors_aux+0x20>)
+ 8000206:	f3af 8000 	nop.w
+ 800020a:	2301      	movs	r3, #1
+ 800020c:	7023      	strb	r3, [r4, #0]
+ 800020e:	bd10      	pop	{r4, pc}
+ 8000210:	20000004 	.word	0x20000004
+ 8000214:	00000000 	.word	0x00000000
+ 8000218:	08000890 	.word	0x08000890
+
+0800021c <frame_dummy>:
+ 800021c:	b508      	push	{r3, lr}
+ 800021e:	4b03      	ldr	r3, [pc, #12]	@ (800022c <frame_dummy+0x10>)
+ 8000220:	b11b      	cbz	r3, 800022a <frame_dummy+0xe>
+ 8000222:	4903      	ldr	r1, [pc, #12]	@ (8000230 <frame_dummy+0x14>)
+ 8000224:	4803      	ldr	r0, [pc, #12]	@ (8000234 <frame_dummy+0x18>)
+ 8000226:	f3af 8000 	nop.w
+ 800022a:	bd08      	pop	{r3, pc}
+ 800022c:	00000000 	.word	0x00000000
+ 8000230:	20000008 	.word	0x20000008
+ 8000234:	08000890 	.word	0x08000890
+
+08000238 <strlen>:
+ 8000238:	4603      	mov	r3, r0
+ 800023a:	f813 2b01 	ldrb.w	r2, [r3], #1
+ 800023e:	2a00      	cmp	r2, #0
+ 8000240:	d1fb      	bne.n	800023a <strlen+0x2>
+ 8000242:	1a18      	subs	r0, r3, r0
+ 8000244:	3801      	subs	r0, #1
+ 8000246:	4770      	bx	lr
+
+08000248 <_DoInit>:
+      if (pRTTCBInit->acID[0] != 'S') {                                                      \
+        _DoInit();                                                                           \
+      }                                                                                      \
+    } while (0)
+
+static void _DoInit(void) {
+ 8000248:	b580      	push	{r7, lr}
+ 800024a:	b082      	sub	sp, #8
+ 800024c:	af00      	add	r7, sp, #0
+  static const char _aInitStr[] = "\0\0\0\0\0\0TTR REGGES";  // Init complete ID string to make sure that things also work if RTT is linked to a no-init memory area
+  unsigned i;
+  //
+  // Initialize control block
+  //
+  p                     = (volatile SEGGER_RTT_CB*)((uintptr_t)&_SEGGER_RTT + SEGGER_RTT_UNCACHED_OFF);  // Access control block uncached so that nothing in the cache ever becomes dirty and all changes are visible in HW directly
+ 800024e:	4b26      	ldr	r3, [pc, #152]	@ (80002e8 <_DoInit+0xa0>)
+ 8000250:	603b      	str	r3, [r7, #0]
+  memset((SEGGER_RTT_CB*)p, 0, sizeof(_SEGGER_RTT));         // Make sure that the RTT CB is always zero initialized.
+ 8000252:	22a8      	movs	r2, #168	@ 0xa8
+ 8000254:	2100      	movs	r1, #0
+ 8000256:	6838      	ldr	r0, [r7, #0]
+ 8000258:	f000 fae0 	bl	800081c <memset>
+  p->MaxNumUpBuffers    = SEGGER_RTT_MAX_NUM_UP_BUFFERS;
+ 800025c:	683b      	ldr	r3, [r7, #0]
+ 800025e:	2203      	movs	r2, #3
+ 8000260:	611a      	str	r2, [r3, #16]
+  p->MaxNumDownBuffers  = SEGGER_RTT_MAX_NUM_DOWN_BUFFERS;
+ 8000262:	683b      	ldr	r3, [r7, #0]
+ 8000264:	2203      	movs	r2, #3
+ 8000266:	615a      	str	r2, [r3, #20]
+  //
+  // Initialize up buffer 0
+  //
+  p->aUp[0].sName         = "Terminal";
+ 8000268:	683b      	ldr	r3, [r7, #0]
+ 800026a:	4a20      	ldr	r2, [pc, #128]	@ (80002ec <_DoInit+0xa4>)
+ 800026c:	619a      	str	r2, [r3, #24]
+  p->aUp[0].pBuffer       = _acUpBuffer;
+ 800026e:	683b      	ldr	r3, [r7, #0]
+ 8000270:	4a1f      	ldr	r2, [pc, #124]	@ (80002f0 <_DoInit+0xa8>)
+ 8000272:	61da      	str	r2, [r3, #28]
+  p->aUp[0].SizeOfBuffer  = BUFFER_SIZE_UP;
+ 8000274:	683b      	ldr	r3, [r7, #0]
+ 8000276:	f44f 6280 	mov.w	r2, #1024	@ 0x400
+ 800027a:	621a      	str	r2, [r3, #32]
+  p->aUp[0].RdOff         = 0u;
+ 800027c:	683b      	ldr	r3, [r7, #0]
+ 800027e:	2200      	movs	r2, #0
+ 8000280:	629a      	str	r2, [r3, #40]	@ 0x28
+  p->aUp[0].WrOff         = 0u;
+ 8000282:	683b      	ldr	r3, [r7, #0]
+ 8000284:	2200      	movs	r2, #0
+ 8000286:	625a      	str	r2, [r3, #36]	@ 0x24
+  p->aUp[0].Flags         = SEGGER_RTT_MODE_DEFAULT;
+ 8000288:	683b      	ldr	r3, [r7, #0]
+ 800028a:	2200      	movs	r2, #0
+ 800028c:	62da      	str	r2, [r3, #44]	@ 0x2c
+  //
+  // Initialize down buffer 0
+  //
+  p->aDown[0].sName         = "Terminal";
+ 800028e:	683b      	ldr	r3, [r7, #0]
+ 8000290:	4a16      	ldr	r2, [pc, #88]	@ (80002ec <_DoInit+0xa4>)
+ 8000292:	661a      	str	r2, [r3, #96]	@ 0x60
+  p->aDown[0].pBuffer       = _acDownBuffer;
+ 8000294:	683b      	ldr	r3, [r7, #0]
+ 8000296:	4a17      	ldr	r2, [pc, #92]	@ (80002f4 <_DoInit+0xac>)
+ 8000298:	665a      	str	r2, [r3, #100]	@ 0x64
+  p->aDown[0].SizeOfBuffer  = BUFFER_SIZE_DOWN;
+ 800029a:	683b      	ldr	r3, [r7, #0]
+ 800029c:	2210      	movs	r2, #16
+ 800029e:	669a      	str	r2, [r3, #104]	@ 0x68
+  p->aDown[0].RdOff         = 0u;
+ 80002a0:	683b      	ldr	r3, [r7, #0]
+ 80002a2:	2200      	movs	r2, #0
+ 80002a4:	671a      	str	r2, [r3, #112]	@ 0x70
+  p->aDown[0].WrOff         = 0u;
+ 80002a6:	683b      	ldr	r3, [r7, #0]
+ 80002a8:	2200      	movs	r2, #0
+ 80002aa:	66da      	str	r2, [r3, #108]	@ 0x6c
+  p->aDown[0].Flags         = SEGGER_RTT_MODE_DEFAULT;
+ 80002ac:	683b      	ldr	r3, [r7, #0]
+ 80002ae:	2200      	movs	r2, #0
+ 80002b0:	675a      	str	r2, [r3, #116]	@ 0x74
+  //
+  // Finish initialization of the control block.
+  // Copy Id string backwards to make sure that "SEGGER RTT" is not found in initializer memory (usually flash),
+  // as this would cause J-Link to "find" the control block at a wrong address.
+  //
+  RTT__DMB();                       // Force order of memory accesses for cores that may perform out-of-order memory accesses
+ 80002b2:	f3bf 8f5f 	dmb	sy
+  for (i = 0; i < sizeof(_aInitStr) - 1; ++i) {
+ 80002b6:	2300      	movs	r3, #0
+ 80002b8:	607b      	str	r3, [r7, #4]
+ 80002ba:	e00c      	b.n	80002d6 <_DoInit+0x8e>
+    p->acID[i] = _aInitStr[sizeof(_aInitStr) - 2 - i];  // Skip terminating \0 at the end of the array
+ 80002bc:	687b      	ldr	r3, [r7, #4]
+ 80002be:	f1c3 030f 	rsb	r3, r3, #15
+ 80002c2:	4a0d      	ldr	r2, [pc, #52]	@ (80002f8 <_DoInit+0xb0>)
+ 80002c4:	5cd1      	ldrb	r1, [r2, r3]
+ 80002c6:	683a      	ldr	r2, [r7, #0]
+ 80002c8:	687b      	ldr	r3, [r7, #4]
+ 80002ca:	4413      	add	r3, r2
+ 80002cc:	460a      	mov	r2, r1
+ 80002ce:	701a      	strb	r2, [r3, #0]
+  for (i = 0; i < sizeof(_aInitStr) - 1; ++i) {
+ 80002d0:	687b      	ldr	r3, [r7, #4]
+ 80002d2:	3301      	adds	r3, #1
+ 80002d4:	607b      	str	r3, [r7, #4]
+ 80002d6:	687b      	ldr	r3, [r7, #4]
+ 80002d8:	2b0f      	cmp	r3, #15
+ 80002da:	d9ef      	bls.n	80002bc <_DoInit+0x74>
+  }
+  RTT__DMB();                       // Force order of memory accesses for cores that may perform out-of-order memory accesses
+ 80002dc:	f3bf 8f5f 	dmb	sy
+}
+ 80002e0:	bf00      	nop
+ 80002e2:	3708      	adds	r7, #8
+ 80002e4:	46bd      	mov	sp, r7
+ 80002e6:	bd80      	pop	{r7, pc}
+ 80002e8:	20000020 	.word	0x20000020
+ 80002ec:	080008a8 	.word	0x080008a8
+ 80002f0:	200000c8 	.word	0x200000c8
+ 80002f4:	200004c8 	.word	0x200004c8
+ 80002f8:	080008e8 	.word	0x080008e8
+
+080002fc <_WriteBlocking>:
+*    NumBytes     Number of bytes to be stored in the SEGGER RTT control block.
+*
+*  Return value
+*    >= 0 - Number of bytes written into buffer.
+*/
+static unsigned _WriteBlocking(SEGGER_RTT_BUFFER_UP* pRing, const char* pBuffer, unsigned NumBytes) {
+ 80002fc:	b580      	push	{r7, lr}
+ 80002fe:	b08a      	sub	sp, #40	@ 0x28
+ 8000300:	af00      	add	r7, sp, #0
+ 8000302:	60f8      	str	r0, [r7, #12]
+ 8000304:	60b9      	str	r1, [r7, #8]
+ 8000306:	607a      	str	r2, [r7, #4]
+  unsigned WrOff;
+  volatile char* pDst;
+  //
+  // Write data to buffer and handle wrap-around if necessary
+  //
+  NumBytesWritten = 0u;
+ 8000308:	2300      	movs	r3, #0
+ 800030a:	623b      	str	r3, [r7, #32]
+  WrOff = pRing->WrOff;
+ 800030c:	68fb      	ldr	r3, [r7, #12]
+ 800030e:	68db      	ldr	r3, [r3, #12]
+ 8000310:	61fb      	str	r3, [r7, #28]
+  do {
+    RdOff = pRing->RdOff;                         // May be changed by host (debug probe) in the meantime
+ 8000312:	68fb      	ldr	r3, [r7, #12]
+ 8000314:	691b      	ldr	r3, [r3, #16]
+ 8000316:	61bb      	str	r3, [r7, #24]
+    if (RdOff > WrOff) {
+ 8000318:	69ba      	ldr	r2, [r7, #24]
+ 800031a:	69fb      	ldr	r3, [r7, #28]
+ 800031c:	429a      	cmp	r2, r3
+ 800031e:	d905      	bls.n	800032c <_WriteBlocking+0x30>
+      NumBytesToWrite = RdOff - WrOff - 1u;
+ 8000320:	69ba      	ldr	r2, [r7, #24]
+ 8000322:	69fb      	ldr	r3, [r7, #28]
+ 8000324:	1ad3      	subs	r3, r2, r3
+ 8000326:	3b01      	subs	r3, #1
+ 8000328:	627b      	str	r3, [r7, #36]	@ 0x24
+ 800032a:	e007      	b.n	800033c <_WriteBlocking+0x40>
+    } else {
+      NumBytesToWrite = pRing->SizeOfBuffer - (WrOff - RdOff + 1u);
+ 800032c:	68fb      	ldr	r3, [r7, #12]
+ 800032e:	689a      	ldr	r2, [r3, #8]
+ 8000330:	69b9      	ldr	r1, [r7, #24]
+ 8000332:	69fb      	ldr	r3, [r7, #28]
+ 8000334:	1acb      	subs	r3, r1, r3
+ 8000336:	4413      	add	r3, r2
+ 8000338:	3b01      	subs	r3, #1
+ 800033a:	627b      	str	r3, [r7, #36]	@ 0x24
+    }
+    NumBytesToWrite = MIN(NumBytesToWrite, (pRing->SizeOfBuffer - WrOff));      // Number of bytes that can be written until buffer wrap-around
+ 800033c:	68fb      	ldr	r3, [r7, #12]
+ 800033e:	689a      	ldr	r2, [r3, #8]
+ 8000340:	69fb      	ldr	r3, [r7, #28]
+ 8000342:	1ad3      	subs	r3, r2, r3
+ 8000344:	6a7a      	ldr	r2, [r7, #36]	@ 0x24
+ 8000346:	4293      	cmp	r3, r2
+ 8000348:	bf28      	it	cs
+ 800034a:	4613      	movcs	r3, r2
+ 800034c:	627b      	str	r3, [r7, #36]	@ 0x24
+    NumBytesToWrite = MIN(NumBytesToWrite, NumBytes);
+ 800034e:	6a7a      	ldr	r2, [r7, #36]	@ 0x24
+ 8000350:	687b      	ldr	r3, [r7, #4]
+ 8000352:	4293      	cmp	r3, r2
+ 8000354:	bf28      	it	cs
+ 8000356:	4613      	movcs	r3, r2
+ 8000358:	627b      	str	r3, [r7, #36]	@ 0x24
+    pDst = (pRing->pBuffer + WrOff) + SEGGER_RTT_UNCACHED_OFF;
+ 800035a:	68fb      	ldr	r3, [r7, #12]
+ 800035c:	685a      	ldr	r2, [r3, #4]
+ 800035e:	69fb      	ldr	r3, [r7, #28]
+ 8000360:	4413      	add	r3, r2
+ 8000362:	617b      	str	r3, [r7, #20]
+    WrOff           += NumBytesToWrite;
+    while (NumBytesToWrite--) {
+      *pDst++ = *pBuffer++;
+    };
+#else
+    SEGGER_RTT_MEMCPY((void*)pDst, pBuffer, NumBytesToWrite);
+ 8000364:	6a7a      	ldr	r2, [r7, #36]	@ 0x24
+ 8000366:	68b9      	ldr	r1, [r7, #8]
+ 8000368:	6978      	ldr	r0, [r7, #20]
+ 800036a:	f000 fa83 	bl	8000874 <memcpy>
+    NumBytesWritten += NumBytesToWrite;
+ 800036e:	6a3a      	ldr	r2, [r7, #32]
+ 8000370:	6a7b      	ldr	r3, [r7, #36]	@ 0x24
+ 8000372:	4413      	add	r3, r2
+ 8000374:	623b      	str	r3, [r7, #32]
+    pBuffer         += NumBytesToWrite;
+ 8000376:	68ba      	ldr	r2, [r7, #8]
+ 8000378:	6a7b      	ldr	r3, [r7, #36]	@ 0x24
+ 800037a:	4413      	add	r3, r2
+ 800037c:	60bb      	str	r3, [r7, #8]
+    NumBytes        -= NumBytesToWrite;
+ 800037e:	687a      	ldr	r2, [r7, #4]
+ 8000380:	6a7b      	ldr	r3, [r7, #36]	@ 0x24
+ 8000382:	1ad3      	subs	r3, r2, r3
+ 8000384:	607b      	str	r3, [r7, #4]
+    WrOff           += NumBytesToWrite;
+ 8000386:	69fa      	ldr	r2, [r7, #28]
+ 8000388:	6a7b      	ldr	r3, [r7, #36]	@ 0x24
+ 800038a:	4413      	add	r3, r2
+ 800038c:	61fb      	str	r3, [r7, #28]
+#endif
+    if (WrOff == pRing->SizeOfBuffer) {
+ 800038e:	68fb      	ldr	r3, [r7, #12]
+ 8000390:	689b      	ldr	r3, [r3, #8]
+ 8000392:	69fa      	ldr	r2, [r7, #28]
+ 8000394:	429a      	cmp	r2, r3
+ 8000396:	d101      	bne.n	800039c <_WriteBlocking+0xa0>
+      WrOff = 0u;
+ 8000398:	2300      	movs	r3, #0
+ 800039a:	61fb      	str	r3, [r7, #28]
+    }
+    RTT__DMB();                     // Force data write to be complete before writing the <WrOff>, in case CPU is allowed to change the order of memory accesses
+ 800039c:	f3bf 8f5f 	dmb	sy
+    pRing->WrOff = WrOff;
+ 80003a0:	68fb      	ldr	r3, [r7, #12]
+ 80003a2:	69fa      	ldr	r2, [r7, #28]
+ 80003a4:	60da      	str	r2, [r3, #12]
+  } while (NumBytes);
+ 80003a6:	687b      	ldr	r3, [r7, #4]
+ 80003a8:	2b00      	cmp	r3, #0
+ 80003aa:	d1b2      	bne.n	8000312 <_WriteBlocking+0x16>
+  return NumBytesWritten;
+ 80003ac:	6a3b      	ldr	r3, [r7, #32]
+}
+ 80003ae:	4618      	mov	r0, r3
+ 80003b0:	3728      	adds	r7, #40	@ 0x28
+ 80003b2:	46bd      	mov	sp, r7
+ 80003b4:	bd80      	pop	{r7, pc}
+
+080003b6 <_WriteNoCheck>:
+*    NumBytes     Number of bytes to be stored in the SEGGER RTT control block.
+*
+*  Notes
+*    (1) If there might not be enough space in the "Up"-buffer, call _WriteBlocking
+*/
+static void _WriteNoCheck(SEGGER_RTT_BUFFER_UP* pRing, const char* pData, unsigned NumBytes) {
+ 80003b6:	b580      	push	{r7, lr}
+ 80003b8:	b088      	sub	sp, #32
+ 80003ba:	af00      	add	r7, sp, #0
+ 80003bc:	60f8      	str	r0, [r7, #12]
+ 80003be:	60b9      	str	r1, [r7, #8]
+ 80003c0:	607a      	str	r2, [r7, #4]
+  unsigned NumBytesAtOnce;
+  unsigned WrOff;
+  unsigned Rem;
+  volatile char* pDst;
+
+  WrOff = pRing->WrOff;
+ 80003c2:	68fb      	ldr	r3, [r7, #12]
+ 80003c4:	68db      	ldr	r3, [r3, #12]
+ 80003c6:	61fb      	str	r3, [r7, #28]
+  Rem = pRing->SizeOfBuffer - WrOff;
+ 80003c8:	68fb      	ldr	r3, [r7, #12]
+ 80003ca:	689a      	ldr	r2, [r3, #8]
+ 80003cc:	69fb      	ldr	r3, [r7, #28]
+ 80003ce:	1ad3      	subs	r3, r2, r3
+ 80003d0:	61bb      	str	r3, [r7, #24]
+  if (Rem > NumBytes) {
+ 80003d2:	69ba      	ldr	r2, [r7, #24]
+ 80003d4:	687b      	ldr	r3, [r7, #4]
+ 80003d6:	429a      	cmp	r2, r3
+ 80003d8:	d911      	bls.n	80003fe <_WriteNoCheck+0x48>
+    //
+    // All data fits before wrap around
+    //
+    pDst = (pRing->pBuffer + WrOff) + SEGGER_RTT_UNCACHED_OFF;
+ 80003da:	68fb      	ldr	r3, [r7, #12]
+ 80003dc:	685a      	ldr	r2, [r3, #4]
+ 80003de:	69fb      	ldr	r3, [r7, #28]
+ 80003e0:	4413      	add	r3, r2
+ 80003e2:	613b      	str	r3, [r7, #16]
+      *pDst++ = *pData++;
+    };
+    RTT__DMB();                     // Force data write to be complete before writing the <WrOff>, in case CPU is allowed to change the order of memory accesses
+    pRing->WrOff = WrOff;
+#else
+    SEGGER_RTT_MEMCPY((void*)pDst, pData, NumBytes);
+ 80003e4:	687a      	ldr	r2, [r7, #4]
+ 80003e6:	68b9      	ldr	r1, [r7, #8]
+ 80003e8:	6938      	ldr	r0, [r7, #16]
+ 80003ea:	f000 fa43 	bl	8000874 <memcpy>
+    RTT__DMB();                     // Force data write to be complete before writing the <WrOff>, in case CPU is allowed to change the order of memory accesses
+ 80003ee:	f3bf 8f5f 	dmb	sy
+    pRing->WrOff = WrOff + NumBytes;
+ 80003f2:	69fa      	ldr	r2, [r7, #28]
+ 80003f4:	687b      	ldr	r3, [r7, #4]
+ 80003f6:	441a      	add	r2, r3
+ 80003f8:	68fb      	ldr	r3, [r7, #12]
+ 80003fa:	60da      	str	r2, [r3, #12]
+    SEGGER_RTT_MEMCPY((void*)pDst, pData + Rem, NumBytesAtOnce);
+    RTT__DMB();                     // Force data write to be complete before writing the <WrOff>, in case CPU is allowed to change the order of memory accesses
+    pRing->WrOff = NumBytesAtOnce;
+#endif
+  }
+}
+ 80003fc:	e01f      	b.n	800043e <_WriteNoCheck+0x88>
+    NumBytesAtOnce = Rem;
+ 80003fe:	69bb      	ldr	r3, [r7, #24]
+ 8000400:	617b      	str	r3, [r7, #20]
+    pDst = (pRing->pBuffer + WrOff) + SEGGER_RTT_UNCACHED_OFF;
+ 8000402:	68fb      	ldr	r3, [r7, #12]
+ 8000404:	685a      	ldr	r2, [r3, #4]
+ 8000406:	69fb      	ldr	r3, [r7, #28]
+ 8000408:	4413      	add	r3, r2
+ 800040a:	613b      	str	r3, [r7, #16]
+    SEGGER_RTT_MEMCPY((void*)pDst, pData, NumBytesAtOnce);
+ 800040c:	697a      	ldr	r2, [r7, #20]
+ 800040e:	68b9      	ldr	r1, [r7, #8]
+ 8000410:	6938      	ldr	r0, [r7, #16]
+ 8000412:	f000 fa2f 	bl	8000874 <memcpy>
+    NumBytesAtOnce = NumBytes - Rem;
+ 8000416:	687a      	ldr	r2, [r7, #4]
+ 8000418:	69bb      	ldr	r3, [r7, #24]
+ 800041a:	1ad3      	subs	r3, r2, r3
+ 800041c:	617b      	str	r3, [r7, #20]
+    pDst = pRing->pBuffer + SEGGER_RTT_UNCACHED_OFF;
+ 800041e:	68fb      	ldr	r3, [r7, #12]
+ 8000420:	685b      	ldr	r3, [r3, #4]
+ 8000422:	613b      	str	r3, [r7, #16]
+    SEGGER_RTT_MEMCPY((void*)pDst, pData + Rem, NumBytesAtOnce);
+ 8000424:	68ba      	ldr	r2, [r7, #8]
+ 8000426:	69bb      	ldr	r3, [r7, #24]
+ 8000428:	4413      	add	r3, r2
+ 800042a:	697a      	ldr	r2, [r7, #20]
+ 800042c:	4619      	mov	r1, r3
+ 800042e:	6938      	ldr	r0, [r7, #16]
+ 8000430:	f000 fa20 	bl	8000874 <memcpy>
+    RTT__DMB();                     // Force data write to be complete before writing the <WrOff>, in case CPU is allowed to change the order of memory accesses
+ 8000434:	f3bf 8f5f 	dmb	sy
+    pRing->WrOff = NumBytesAtOnce;
+ 8000438:	68fb      	ldr	r3, [r7, #12]
+ 800043a:	697a      	ldr	r2, [r7, #20]
+ 800043c:	60da      	str	r2, [r3, #12]
+}
+ 800043e:	bf00      	nop
+ 8000440:	3720      	adds	r7, #32
+ 8000442:	46bd      	mov	sp, r7
+ 8000444:	bd80      	pop	{r7, pc}
+
+08000446 <_GetAvailWriteSpace>:
+*    pRing        Ring buffer to check.
+*
+*  Return value
+*    Number of bytes that are free in the buffer.
+*/
+static unsigned _GetAvailWriteSpace(SEGGER_RTT_BUFFER_UP* pRing) {
+ 8000446:	b480      	push	{r7}
+ 8000448:	b087      	sub	sp, #28
+ 800044a:	af00      	add	r7, sp, #0
+ 800044c:	6078      	str	r0, [r7, #4]
+  unsigned r;
+  //
+  // Avoid warnings regarding volatile access order.  It's not a problem
+  // in this case, but dampen compiler enthusiasm.
+  //
+  RdOff = pRing->RdOff;
+ 800044e:	687b      	ldr	r3, [r7, #4]
+ 8000450:	691b      	ldr	r3, [r3, #16]
+ 8000452:	613b      	str	r3, [r7, #16]
+  WrOff = pRing->WrOff;
+ 8000454:	687b      	ldr	r3, [r7, #4]
+ 8000456:	68db      	ldr	r3, [r3, #12]
+ 8000458:	60fb      	str	r3, [r7, #12]
+  if (RdOff <= WrOff) {
+ 800045a:	693a      	ldr	r2, [r7, #16]
+ 800045c:	68fb      	ldr	r3, [r7, #12]
+ 800045e:	429a      	cmp	r2, r3
+ 8000460:	d808      	bhi.n	8000474 <_GetAvailWriteSpace+0x2e>
+    r = pRing->SizeOfBuffer - 1u - WrOff + RdOff;
+ 8000462:	687b      	ldr	r3, [r7, #4]
+ 8000464:	689a      	ldr	r2, [r3, #8]
+ 8000466:	68fb      	ldr	r3, [r7, #12]
+ 8000468:	1ad2      	subs	r2, r2, r3
+ 800046a:	693b      	ldr	r3, [r7, #16]
+ 800046c:	4413      	add	r3, r2
+ 800046e:	3b01      	subs	r3, #1
+ 8000470:	617b      	str	r3, [r7, #20]
+ 8000472:	e004      	b.n	800047e <_GetAvailWriteSpace+0x38>
+  } else {
+    r = RdOff - WrOff - 1u;
+ 8000474:	693a      	ldr	r2, [r7, #16]
+ 8000476:	68fb      	ldr	r3, [r7, #12]
+ 8000478:	1ad3      	subs	r3, r2, r3
+ 800047a:	3b01      	subs	r3, #1
+ 800047c:	617b      	str	r3, [r7, #20]
+  }
+  return r;
+ 800047e:	697b      	ldr	r3, [r7, #20]
+}
+ 8000480:	4618      	mov	r0, r3
+ 8000482:	371c      	adds	r7, #28
+ 8000484:	46bd      	mov	sp, r7
+ 8000486:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 800048a:	4770      	bx	lr
+
+0800048c <SEGGER_RTT_WriteNoLock>:
+*    (1) Data is stored according to buffer flags.
+*    (2) For performance reasons this function does not call Init()
+*        and may only be called after RTT has been initialized.
+*        Either by calling SEGGER_RTT_Init() or calling another RTT API function first.
+*/
+unsigned SEGGER_RTT_WriteNoLock(unsigned BufferIndex, const void* pBuffer, unsigned NumBytes) {
+ 800048c:	b580      	push	{r7, lr}
+ 800048e:	b088      	sub	sp, #32
+ 8000490:	af00      	add	r7, sp, #0
+ 8000492:	60f8      	str	r0, [r7, #12]
+ 8000494:	60b9      	str	r1, [r7, #8]
+ 8000496:	607a      	str	r2, [r7, #4]
+  const char*           pData;
+  SEGGER_RTT_BUFFER_UP* pRing;
+  //
+  // Get "to-host" ring buffer.
+  //
+  pData = (const char *)pBuffer;
+ 8000498:	68bb      	ldr	r3, [r7, #8]
+ 800049a:	61bb      	str	r3, [r7, #24]
+  pRing = (SEGGER_RTT_BUFFER_UP*)((uintptr_t)&_SEGGER_RTT.aUp[BufferIndex] + SEGGER_RTT_UNCACHED_OFF);  // Access uncached to make sure we see changes made by the J-Link side and all of our changes go into HW directly
+ 800049c:	68fb      	ldr	r3, [r7, #12]
+ 800049e:	1c5a      	adds	r2, r3, #1
+ 80004a0:	4613      	mov	r3, r2
+ 80004a2:	005b      	lsls	r3, r3, #1
+ 80004a4:	4413      	add	r3, r2
+ 80004a6:	00db      	lsls	r3, r3, #3
+ 80004a8:	4a1f      	ldr	r2, [pc, #124]	@ (8000528 <SEGGER_RTT_WriteNoLock+0x9c>)
+ 80004aa:	4413      	add	r3, r2
+ 80004ac:	617b      	str	r3, [r7, #20]
+  //
+  // How we output depends upon the mode...
+  //
+  switch (pRing->Flags) {
+ 80004ae:	697b      	ldr	r3, [r7, #20]
+ 80004b0:	695b      	ldr	r3, [r3, #20]
+ 80004b2:	2b02      	cmp	r3, #2
+ 80004b4:	d029      	beq.n	800050a <SEGGER_RTT_WriteNoLock+0x7e>
+ 80004b6:	2b02      	cmp	r3, #2
+ 80004b8:	d82e      	bhi.n	8000518 <SEGGER_RTT_WriteNoLock+0x8c>
+ 80004ba:	2b00      	cmp	r3, #0
+ 80004bc:	d002      	beq.n	80004c4 <SEGGER_RTT_WriteNoLock+0x38>
+ 80004be:	2b01      	cmp	r3, #1
+ 80004c0:	d013      	beq.n	80004ea <SEGGER_RTT_WriteNoLock+0x5e>
+ 80004c2:	e029      	b.n	8000518 <SEGGER_RTT_WriteNoLock+0x8c>
+  case SEGGER_RTT_MODE_NO_BLOCK_SKIP:
+    //
+    // If we are in skip mode and there is no space for the whole
+    // of this output, don't bother.
+    //
+    Avail = _GetAvailWriteSpace(pRing);
+ 80004c4:	6978      	ldr	r0, [r7, #20]
+ 80004c6:	f7ff ffbe 	bl	8000446 <_GetAvailWriteSpace>
+ 80004ca:	6138      	str	r0, [r7, #16]
+    if (Avail < NumBytes) {
+ 80004cc:	693a      	ldr	r2, [r7, #16]
+ 80004ce:	687b      	ldr	r3, [r7, #4]
+ 80004d0:	429a      	cmp	r2, r3
+ 80004d2:	d202      	bcs.n	80004da <SEGGER_RTT_WriteNoLock+0x4e>
+      Status = 0u;
+ 80004d4:	2300      	movs	r3, #0
+ 80004d6:	61fb      	str	r3, [r7, #28]
+    } else {
+      Status = NumBytes;
+      _WriteNoCheck(pRing, pData, NumBytes);
+    }
+    break;
+ 80004d8:	e021      	b.n	800051e <SEGGER_RTT_WriteNoLock+0x92>
+      Status = NumBytes;
+ 80004da:	687b      	ldr	r3, [r7, #4]
+ 80004dc:	61fb      	str	r3, [r7, #28]
+      _WriteNoCheck(pRing, pData, NumBytes);
+ 80004de:	687a      	ldr	r2, [r7, #4]
+ 80004e0:	69b9      	ldr	r1, [r7, #24]
+ 80004e2:	6978      	ldr	r0, [r7, #20]
+ 80004e4:	f7ff ff67 	bl	80003b6 <_WriteNoCheck>
+    break;
+ 80004e8:	e019      	b.n	800051e <SEGGER_RTT_WriteNoLock+0x92>
+  case SEGGER_RTT_MODE_NO_BLOCK_TRIM:
+    //
+    // If we are in trim mode, trim to what we can output without blocking.
+    //
+    Avail = _GetAvailWriteSpace(pRing);
+ 80004ea:	6978      	ldr	r0, [r7, #20]
+ 80004ec:	f7ff ffab 	bl	8000446 <_GetAvailWriteSpace>
+ 80004f0:	6138      	str	r0, [r7, #16]
+    Status = Avail < NumBytes ? Avail : NumBytes;
+ 80004f2:	687a      	ldr	r2, [r7, #4]
+ 80004f4:	693b      	ldr	r3, [r7, #16]
+ 80004f6:	4293      	cmp	r3, r2
+ 80004f8:	bf28      	it	cs
+ 80004fa:	4613      	movcs	r3, r2
+ 80004fc:	61fb      	str	r3, [r7, #28]
+    _WriteNoCheck(pRing, pData, Status);
+ 80004fe:	69fa      	ldr	r2, [r7, #28]
+ 8000500:	69b9      	ldr	r1, [r7, #24]
+ 8000502:	6978      	ldr	r0, [r7, #20]
+ 8000504:	f7ff ff57 	bl	80003b6 <_WriteNoCheck>
+    break;
+ 8000508:	e009      	b.n	800051e <SEGGER_RTT_WriteNoLock+0x92>
+  case SEGGER_RTT_MODE_BLOCK_IF_FIFO_FULL:
+    //
+    // If we are in blocking mode, output everything.
+    //
+    Status = _WriteBlocking(pRing, pData, NumBytes);
+ 800050a:	687a      	ldr	r2, [r7, #4]
+ 800050c:	69b9      	ldr	r1, [r7, #24]
+ 800050e:	6978      	ldr	r0, [r7, #20]
+ 8000510:	f7ff fef4 	bl	80002fc <_WriteBlocking>
+ 8000514:	61f8      	str	r0, [r7, #28]
+    break;
+ 8000516:	e002      	b.n	800051e <SEGGER_RTT_WriteNoLock+0x92>
+  default:
+    Status = 0u;
+ 8000518:	2300      	movs	r3, #0
+ 800051a:	61fb      	str	r3, [r7, #28]
+    break;
+ 800051c:	bf00      	nop
+  }
+  //
+  // Finish up.
+  //
+  return Status;
+ 800051e:	69fb      	ldr	r3, [r7, #28]
+}
+ 8000520:	4618      	mov	r0, r3
+ 8000522:	3720      	adds	r7, #32
+ 8000524:	46bd      	mov	sp, r7
+ 8000526:	bd80      	pop	{r7, pc}
+ 8000528:	20000020 	.word	0x20000020
+
+0800052c <SEGGER_RTT_Write>:
+*    Number of bytes which have been stored in the "Up"-buffer.
+*
+*  Notes
+*    (1) Data is stored according to buffer flags.
+*/
+unsigned SEGGER_RTT_Write(unsigned BufferIndex, const void* pBuffer, unsigned NumBytes) {
+ 800052c:	b580      	push	{r7, lr}
+ 800052e:	b088      	sub	sp, #32
+ 8000530:	af00      	add	r7, sp, #0
+ 8000532:	60f8      	str	r0, [r7, #12]
+ 8000534:	60b9      	str	r1, [r7, #8]
+ 8000536:	607a      	str	r2, [r7, #4]
+  unsigned Status;
+
+  INIT();
+ 8000538:	4b0e      	ldr	r3, [pc, #56]	@ (8000574 <SEGGER_RTT_Write+0x48>)
+ 800053a:	61fb      	str	r3, [r7, #28]
+ 800053c:	69fb      	ldr	r3, [r7, #28]
+ 800053e:	781b      	ldrb	r3, [r3, #0]
+ 8000540:	b2db      	uxtb	r3, r3
+ 8000542:	2b53      	cmp	r3, #83	@ 0x53
+ 8000544:	d001      	beq.n	800054a <SEGGER_RTT_Write+0x1e>
+ 8000546:	f7ff fe7f 	bl	8000248 <_DoInit>
+  SEGGER_RTT_LOCK();
+ 800054a:	f3ef 8311 	mrs	r3, BASEPRI
+ 800054e:	f04f 0120 	mov.w	r1, #32
+ 8000552:	f381 8811 	msr	BASEPRI, r1
+ 8000556:	61bb      	str	r3, [r7, #24]
+  Status = SEGGER_RTT_WriteNoLock(BufferIndex, pBuffer, NumBytes);  // Call the non-locking write function
+ 8000558:	687a      	ldr	r2, [r7, #4]
+ 800055a:	68b9      	ldr	r1, [r7, #8]
+ 800055c:	68f8      	ldr	r0, [r7, #12]
+ 800055e:	f7ff ff95 	bl	800048c <SEGGER_RTT_WriteNoLock>
+ 8000562:	6178      	str	r0, [r7, #20]
+  SEGGER_RTT_UNLOCK();
+ 8000564:	69bb      	ldr	r3, [r7, #24]
+ 8000566:	f383 8811 	msr	BASEPRI, r3
+  return Status;
+ 800056a:	697b      	ldr	r3, [r7, #20]
+}
+ 800056c:	4618      	mov	r0, r3
+ 800056e:	3720      	adds	r7, #32
+ 8000570:	46bd      	mov	sp, r7
+ 8000572:	bd80      	pop	{r7, pc}
+ 8000574:	20000020 	.word	0x20000020
+
+08000578 <SEGGER_RTT_WriteString>:
+*  Notes
+*    (1) Data is stored according to buffer flags.
+*    (2) String passed to this function has to be \0 terminated
+*    (3) \0 termination character is *not* stored in RTT buffer
+*/
+unsigned SEGGER_RTT_WriteString(unsigned BufferIndex, const char* s) {
+ 8000578:	b580      	push	{r7, lr}
+ 800057a:	b084      	sub	sp, #16
+ 800057c:	af00      	add	r7, sp, #0
+ 800057e:	6078      	str	r0, [r7, #4]
+ 8000580:	6039      	str	r1, [r7, #0]
+  unsigned Len;
+
+  Len = STRLEN(s);
+ 8000582:	6838      	ldr	r0, [r7, #0]
+ 8000584:	f7ff fe58 	bl	8000238 <strlen>
+ 8000588:	60f8      	str	r0, [r7, #12]
+  return SEGGER_RTT_Write(BufferIndex, s, Len);
+ 800058a:	68fa      	ldr	r2, [r7, #12]
+ 800058c:	6839      	ldr	r1, [r7, #0]
+ 800058e:	6878      	ldr	r0, [r7, #4]
+ 8000590:	f7ff ffcc 	bl	800052c <SEGGER_RTT_Write>
+ 8000594:	4603      	mov	r3, r0
+}
+ 8000596:	4618      	mov	r0, r3
+ 8000598:	3710      	adds	r7, #16
+ 800059a:	46bd      	mov	sp, r7
+ 800059c:	bd80      	pop	{r7, pc}
+
+0800059e <SEGGER_RTT_Init>:
+*  Function description
+*    Initializes the RTT Control Block.
+*    Should be used in RAM targets, at start of the application.
+*
+*/
+void SEGGER_RTT_Init (void) {
+ 800059e:	b580      	push	{r7, lr}
+ 80005a0:	af00      	add	r7, sp, #0
+  _DoInit();
+ 80005a2:	f7ff fe51 	bl	8000248 <_DoInit>
+}
+ 80005a6:	bf00      	nop
+ 80005a8:	bd80      	pop	{r7, pc}
+
+080005aa <delay>:
+#include "stm32f7xx.h"
+#include "SEGGER_RTT.h"
+
+void delay(volatile uint32_t count) {
+ 80005aa:	b480      	push	{r7}
+ 80005ac:	b083      	sub	sp, #12
+ 80005ae:	af00      	add	r7, sp, #0
+ 80005b0:	6078      	str	r0, [r7, #4]
+    while (count--);
+ 80005b2:	bf00      	nop
+ 80005b4:	687b      	ldr	r3, [r7, #4]
+ 80005b6:	1e5a      	subs	r2, r3, #1
+ 80005b8:	607a      	str	r2, [r7, #4]
+ 80005ba:	2b00      	cmp	r3, #0
+ 80005bc:	d1fa      	bne.n	80005b4 <delay+0xa>
+}
+ 80005be:	bf00      	nop
+ 80005c0:	bf00      	nop
+ 80005c2:	370c      	adds	r7, #12
+ 80005c4:	46bd      	mov	sp, r7
+ 80005c6:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 80005ca:	4770      	bx	lr
+
+080005cc <main>:
+
+int main(void) {
+ 80005cc:	b580      	push	{r7, lr}
+ 80005ce:	b082      	sub	sp, #8
+ 80005d0:	af00      	add	r7, sp, #0
+	uint8_t led_state = 0;
+ 80005d2:	2300      	movs	r3, #0
+ 80005d4:	71fb      	strb	r3, [r7, #7]
+    // Enable GPIOB clock on AHB1 bus
+    RCC->AHB1ENR |= (1U << 1);
+ 80005d6:	4b49      	ldr	r3, [pc, #292]	@ (80006fc <main+0x130>)
+ 80005d8:	6b1b      	ldr	r3, [r3, #48]	@ 0x30
+ 80005da:	4a48      	ldr	r2, [pc, #288]	@ (80006fc <main+0x130>)
+ 80005dc:	f043 0302 	orr.w	r3, r3, #2
+ 80005e0:	6313      	str	r3, [r2, #48]	@ 0x30
+    // Enable GPIOC clock on AHB1 bus
+    RCC->AHB1ENR |= (1U<<2);
+ 80005e2:	4b46      	ldr	r3, [pc, #280]	@ (80006fc <main+0x130>)
+ 80005e4:	6b1b      	ldr	r3, [r3, #48]	@ 0x30
+ 80005e6:	4a45      	ldr	r2, [pc, #276]	@ (80006fc <main+0x130>)
+ 80005e8:	f043 0304 	orr.w	r3, r3, #4
+ 80005ec:	6313      	str	r3, [r2, #48]	@ 0x30
+
+    // Configure PB0 as output (LD1 green LED)
+    GPIOB->MODER &= ~(3U << 0);   // clear bits 1:0
+ 80005ee:	4b44      	ldr	r3, [pc, #272]	@ (8000700 <main+0x134>)
+ 80005f0:	681b      	ldr	r3, [r3, #0]
+ 80005f2:	4a43      	ldr	r2, [pc, #268]	@ (8000700 <main+0x134>)
+ 80005f4:	f023 0303 	bic.w	r3, r3, #3
+ 80005f8:	6013      	str	r3, [r2, #0]
+    GPIOB->MODER |=  (1U << 0);   // set to output mode
+ 80005fa:	4b41      	ldr	r3, [pc, #260]	@ (8000700 <main+0x134>)
+ 80005fc:	681b      	ldr	r3, [r3, #0]
+ 80005fe:	4a40      	ldr	r2, [pc, #256]	@ (8000700 <main+0x134>)
+ 8000600:	f043 0301 	orr.w	r3, r3, #1
+ 8000604:	6013      	str	r3, [r2, #0]
+
+    GPIOB->MODER &= ~(3U << 14);  // clear bits 15:14
+ 8000606:	4b3e      	ldr	r3, [pc, #248]	@ (8000700 <main+0x134>)
+ 8000608:	681b      	ldr	r3, [r3, #0]
+ 800060a:	4a3d      	ldr	r2, [pc, #244]	@ (8000700 <main+0x134>)
+ 800060c:	f423 4340 	bic.w	r3, r3, #49152	@ 0xc000
+ 8000610:	6013      	str	r3, [r2, #0]
+    GPIOB->MODER |=  (1U << 14);  // set to 01 = output
+ 8000612:	4b3b      	ldr	r3, [pc, #236]	@ (8000700 <main+0x134>)
+ 8000614:	681b      	ldr	r3, [r3, #0]
+ 8000616:	4a3a      	ldr	r2, [pc, #232]	@ (8000700 <main+0x134>)
+ 8000618:	f443 4380 	orr.w	r3, r3, #16384	@ 0x4000
+ 800061c:	6013      	str	r3, [r2, #0]
+
+    GPIOB->MODER &= ~(3U << 28);  // clear bits 15:14
+ 800061e:	4b38      	ldr	r3, [pc, #224]	@ (8000700 <main+0x134>)
+ 8000620:	681b      	ldr	r3, [r3, #0]
+ 8000622:	4a37      	ldr	r2, [pc, #220]	@ (8000700 <main+0x134>)
+ 8000624:	f023 5340 	bic.w	r3, r3, #805306368	@ 0x30000000
+ 8000628:	6013      	str	r3, [r2, #0]
+    GPIOB->MODER |=  (1U << 28);  // set to 01 = output
+ 800062a:	4b35      	ldr	r3, [pc, #212]	@ (8000700 <main+0x134>)
+ 800062c:	681b      	ldr	r3, [r3, #0]
+ 800062e:	4a34      	ldr	r2, [pc, #208]	@ (8000700 <main+0x134>)
+ 8000630:	f043 5380 	orr.w	r3, r3, #268435456	@ 0x10000000
+ 8000634:	6013      	str	r3, [r2, #0]
+
+    // Configure PC13 as input (default after reset is already input)
+    // but let's be explicit — set bits [27:26] to 00
+    GPIOC->MODER &= ~(3U << 26);
+ 8000636:	4b33      	ldr	r3, [pc, #204]	@ (8000704 <main+0x138>)
+ 8000638:	681b      	ldr	r3, [r3, #0]
+ 800063a:	4a32      	ldr	r2, [pc, #200]	@ (8000704 <main+0x138>)
+ 800063c:	f023 6340 	bic.w	r3, r3, #201326592	@ 0xc000000
+ 8000640:	6013      	str	r3, [r2, #0]
+
+    // Initialize RTT
+    SEGGER_RTT_Init();
+ 8000642:	f7ff ffac 	bl	800059e <SEGGER_RTT_Init>
+    SEGGER_RTT_WriteString(0, "System started!\n");
+ 8000646:	4930      	ldr	r1, [pc, #192]	@ (8000708 <main+0x13c>)
+ 8000648:	2000      	movs	r0, #0
+ 800064a:	f7ff ff95 	bl	8000578 <SEGGER_RTT_WriteString>
+
+    while (1) {
+
+
+    	if (GPIOC->IDR & (1U <<13)){
+ 800064e:	4b2d      	ldr	r3, [pc, #180]	@ (8000704 <main+0x138>)
+ 8000650:	691b      	ldr	r3, [r3, #16]
+ 8000652:	f403 5300 	and.w	r3, r3, #8192	@ 0x2000
+ 8000656:	2b00      	cmp	r3, #0
+ 8000658:	d0f9      	beq.n	800064e <main+0x82>
+
+    		while(GPIOC->IDR & (1U <<13));
+ 800065a:	bf00      	nop
+ 800065c:	4b29      	ldr	r3, [pc, #164]	@ (8000704 <main+0x138>)
+ 800065e:	691b      	ldr	r3, [r3, #16]
+ 8000660:	f403 5300 	and.w	r3, r3, #8192	@ 0x2000
+ 8000664:	2b00      	cmp	r3, #0
+ 8000666:	d1f9      	bne.n	800065c <main+0x90>
+    		delay(50000);
+ 8000668:	f24c 3050 	movw	r0, #50000	@ 0xc350
+ 800066c:	f7ff ff9d 	bl	80005aa <delay>
+
+    		GPIOB->ODR &= ~(1U << 0);
+ 8000670:	4b23      	ldr	r3, [pc, #140]	@ (8000700 <main+0x134>)
+ 8000672:	695b      	ldr	r3, [r3, #20]
+ 8000674:	4a22      	ldr	r2, [pc, #136]	@ (8000700 <main+0x134>)
+ 8000676:	f023 0301 	bic.w	r3, r3, #1
+ 800067a:	6153      	str	r3, [r2, #20]
+    		GPIOB->ODR &= ~(1U << 7);
+ 800067c:	4b20      	ldr	r3, [pc, #128]	@ (8000700 <main+0x134>)
+ 800067e:	695b      	ldr	r3, [r3, #20]
+ 8000680:	4a1f      	ldr	r2, [pc, #124]	@ (8000700 <main+0x134>)
+ 8000682:	f023 0380 	bic.w	r3, r3, #128	@ 0x80
+ 8000686:	6153      	str	r3, [r2, #20]
+    		GPIOB->ODR &= ~(1U << 14);
+ 8000688:	4b1d      	ldr	r3, [pc, #116]	@ (8000700 <main+0x134>)
+ 800068a:	695b      	ldr	r3, [r3, #20]
+ 800068c:	4a1c      	ldr	r2, [pc, #112]	@ (8000700 <main+0x134>)
+ 800068e:	f423 4380 	bic.w	r3, r3, #16384	@ 0x4000
+ 8000692:	6153      	str	r3, [r2, #20]
+
+
+
+    		if( led_state == 0) {
+ 8000694:	79fb      	ldrb	r3, [r7, #7]
+ 8000696:	2b00      	cmp	r3, #0
+ 8000698:	d10a      	bne.n	80006b0 <main+0xe4>
+    			SEGGER_RTT_WriteString(0, "Green ON\n");
+ 800069a:	491c      	ldr	r1, [pc, #112]	@ (800070c <main+0x140>)
+ 800069c:	2000      	movs	r0, #0
+ 800069e:	f7ff ff6b 	bl	8000578 <SEGGER_RTT_WriteString>
+    			GPIOB->ODR |= (1U << 0);
+ 80006a2:	4b17      	ldr	r3, [pc, #92]	@ (8000700 <main+0x134>)
+ 80006a4:	695b      	ldr	r3, [r3, #20]
+ 80006a6:	4a16      	ldr	r2, [pc, #88]	@ (8000700 <main+0x134>)
+ 80006a8:	f043 0301 	orr.w	r3, r3, #1
+ 80006ac:	6153      	str	r3, [r2, #20]
+ 80006ae:	e017      	b.n	80006e0 <main+0x114>
+    		}
+    		else if ( led_state == 1) {
+ 80006b0:	79fb      	ldrb	r3, [r7, #7]
+ 80006b2:	2b01      	cmp	r3, #1
+ 80006b4:	d10a      	bne.n	80006cc <main+0x100>
+    			SEGGER_RTT_WriteString(0, "Blue ON\n");
+ 80006b6:	4916      	ldr	r1, [pc, #88]	@ (8000710 <main+0x144>)
+ 80006b8:	2000      	movs	r0, #0
+ 80006ba:	f7ff ff5d 	bl	8000578 <SEGGER_RTT_WriteString>
+    			GPIOB->ODR |= (1U << 7);
+ 80006be:	4b10      	ldr	r3, [pc, #64]	@ (8000700 <main+0x134>)
+ 80006c0:	695b      	ldr	r3, [r3, #20]
+ 80006c2:	4a0f      	ldr	r2, [pc, #60]	@ (8000700 <main+0x134>)
+ 80006c4:	f043 0380 	orr.w	r3, r3, #128	@ 0x80
+ 80006c8:	6153      	str	r3, [r2, #20]
+ 80006ca:	e009      	b.n	80006e0 <main+0x114>
+    		}
+    		else {
+    			SEGGER_RTT_WriteString(0, "Red ON\n");
+ 80006cc:	4911      	ldr	r1, [pc, #68]	@ (8000714 <main+0x148>)
+ 80006ce:	2000      	movs	r0, #0
+ 80006d0:	f7ff ff52 	bl	8000578 <SEGGER_RTT_WriteString>
+    			GPIOB->ODR |= (1U << 14);
+ 80006d4:	4b0a      	ldr	r3, [pc, #40]	@ (8000700 <main+0x134>)
+ 80006d6:	695b      	ldr	r3, [r3, #20]
+ 80006d8:	4a09      	ldr	r2, [pc, #36]	@ (8000700 <main+0x134>)
+ 80006da:	f443 4380 	orr.w	r3, r3, #16384	@ 0x4000
+ 80006de:	6153      	str	r3, [r2, #20]
+    		}
+
+    		led_state = (led_state + 1) % 3;
+ 80006e0:	79fb      	ldrb	r3, [r7, #7]
+ 80006e2:	1c5a      	adds	r2, r3, #1
+ 80006e4:	4b0c      	ldr	r3, [pc, #48]	@ (8000718 <main+0x14c>)
+ 80006e6:	fb83 3102 	smull	r3, r1, r3, r2
+ 80006ea:	17d3      	asrs	r3, r2, #31
+ 80006ec:	1ac9      	subs	r1, r1, r3
+ 80006ee:	460b      	mov	r3, r1
+ 80006f0:	005b      	lsls	r3, r3, #1
+ 80006f2:	440b      	add	r3, r1
+ 80006f4:	1ad1      	subs	r1, r2, r3
+ 80006f6:	460b      	mov	r3, r1
+ 80006f8:	71fb      	strb	r3, [r7, #7]
+    	if (GPIOC->IDR & (1U <<13)){
+ 80006fa:	e7a8      	b.n	800064e <main+0x82>
+ 80006fc:	40023800 	.word	0x40023800
+ 8000700:	40020400 	.word	0x40020400
+ 8000704:	40020800 	.word	0x40020800
+ 8000708:	080008b4 	.word	0x080008b4
+ 800070c:	080008c8 	.word	0x080008c8
+ 8000710:	080008d4 	.word	0x080008d4
+ 8000714:	080008e0 	.word	0x080008e0
+ 8000718:	55555556 	.word	0x55555556
+
+0800071c <NMI_Handler>:
+/******************************************************************************/
+/**
+  * @brief This function handles Non maskable interrupt.
+  */
+void NMI_Handler(void)
+{
+ 800071c:	b480      	push	{r7}
+ 800071e:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
+
+  /* USER CODE END NonMaskableInt_IRQn 0 */
+  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
+   while (1)
+ 8000720:	bf00      	nop
+ 8000722:	e7fd      	b.n	8000720 <NMI_Handler+0x4>
+
+08000724 <HardFault_Handler>:
+
+/**
+  * @brief This function handles Hard fault interrupt.
+  */
+void HardFault_Handler(void)
+{
+ 8000724:	b480      	push	{r7}
+ 8000726:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN HardFault_IRQn 0 */
+
+  /* USER CODE END HardFault_IRQn 0 */
+  while (1)
+ 8000728:	bf00      	nop
+ 800072a:	e7fd      	b.n	8000728 <HardFault_Handler+0x4>
+
+0800072c <MemManage_Handler>:
+
+/**
+  * @brief This function handles Memory management fault.
+  */
+void MemManage_Handler(void)
+{
+ 800072c:	b480      	push	{r7}
+ 800072e:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN MemoryManagement_IRQn 0 */
+
+  /* USER CODE END MemoryManagement_IRQn 0 */
+  while (1)
+ 8000730:	bf00      	nop
+ 8000732:	e7fd      	b.n	8000730 <MemManage_Handler+0x4>
+
+08000734 <BusFault_Handler>:
+
+/**
+  * @brief This function handles Pre-fetch fault, memory access fault.
+  */
+void BusFault_Handler(void)
+{
+ 8000734:	b480      	push	{r7}
+ 8000736:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN BusFault_IRQn 0 */
+
+  /* USER CODE END BusFault_IRQn 0 */
+  while (1)
+ 8000738:	bf00      	nop
+ 800073a:	e7fd      	b.n	8000738 <BusFault_Handler+0x4>
+
+0800073c <UsageFault_Handler>:
+
+/**
+  * @brief This function handles Undefined instruction or illegal state.
+  */
+void UsageFault_Handler(void)
+{
+ 800073c:	b480      	push	{r7}
+ 800073e:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN UsageFault_IRQn 0 */
+
+  /* USER CODE END UsageFault_IRQn 0 */
+  while (1)
+ 8000740:	bf00      	nop
+ 8000742:	e7fd      	b.n	8000740 <UsageFault_Handler+0x4>
+
+08000744 <SVC_Handler>:
+
+/**
+  * @brief This function handles System service call via SWI instruction.
+  */
+void SVC_Handler(void)
+{
+ 8000744:	b480      	push	{r7}
+ 8000746:	af00      	add	r7, sp, #0
+
+  /* USER CODE END SVCall_IRQn 0 */
+  /* USER CODE BEGIN SVCall_IRQn 1 */
+
+  /* USER CODE END SVCall_IRQn 1 */
+}
+ 8000748:	bf00      	nop
+ 800074a:	46bd      	mov	sp, r7
+ 800074c:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8000750:	4770      	bx	lr
+
+08000752 <DebugMon_Handler>:
+
+/**
+  * @brief This function handles Debug monitor.
+  */
+void DebugMon_Handler(void)
+{
+ 8000752:	b480      	push	{r7}
+ 8000754:	af00      	add	r7, sp, #0
+
+  /* USER CODE END DebugMonitor_IRQn 0 */
+  /* USER CODE BEGIN DebugMonitor_IRQn 1 */
+
+  /* USER CODE END DebugMonitor_IRQn 1 */
+}
+ 8000756:	bf00      	nop
+ 8000758:	46bd      	mov	sp, r7
+ 800075a:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 800075e:	4770      	bx	lr
+
+08000760 <PendSV_Handler>:
+
+/**
+  * @brief This function handles Pendable request for system service.
+  */
+void PendSV_Handler(void)
+{
+ 8000760:	b480      	push	{r7}
+ 8000762:	af00      	add	r7, sp, #0
+
+  /* USER CODE END PendSV_IRQn 0 */
+  /* USER CODE BEGIN PendSV_IRQn 1 */
+
+  /* USER CODE END PendSV_IRQn 1 */
+}
+ 8000764:	bf00      	nop
+ 8000766:	46bd      	mov	sp, r7
+ 8000768:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 800076c:	4770      	bx	lr
+
+0800076e <SysTick_Handler>:
+
+/**
+  * @brief This function handles System tick timer.
+  */
+void SysTick_Handler(void)
+{
+ 800076e:	b580      	push	{r7, lr}
+ 8000770:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN SysTick_IRQn 0 */
+
+  /* USER CODE END SysTick_IRQn 0 */
+  HAL_IncTick();
+ 8000772:	f000 f83f 	bl	80007f4 <HAL_IncTick>
+  /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  /* USER CODE END SysTick_IRQn 1 */
+}
+ 8000776:	bf00      	nop
+ 8000778:	bd80      	pop	{r7, pc}
+	...
+
+0800077c <SystemInit>:
+  *         SystemFrequency variable.
+  * @param  None
+  * @retval None
+  */
+void SystemInit(void)
+{
+ 800077c:	b480      	push	{r7}
+ 800077e:	af00      	add	r7, sp, #0
+  /* FPU settings ------------------------------------------------------------*/
+#if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
+  SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */
+ 8000780:	4b06      	ldr	r3, [pc, #24]	@ (800079c <SystemInit+0x20>)
+ 8000782:	f8d3 3088 	ldr.w	r3, [r3, #136]	@ 0x88
+ 8000786:	4a05      	ldr	r2, [pc, #20]	@ (800079c <SystemInit+0x20>)
+ 8000788:	f443 0370 	orr.w	r3, r3, #15728640	@ 0xf00000
+ 800078c:	f8c2 3088 	str.w	r3, [r2, #136]	@ 0x88
+
+  /* Configure the Vector Table location -------------------------------------*/
+#if defined(USER_VECT_TAB_ADDRESS)
+  SCB->VTOR = VECT_TAB_BASE_ADDRESS | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM */
+#endif /* USER_VECT_TAB_ADDRESS */
+}
+ 8000790:	bf00      	nop
+ 8000792:	46bd      	mov	sp, r7
+ 8000794:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8000798:	4770      	bx	lr
+ 800079a:	bf00      	nop
+ 800079c:	e000ed00 	.word	0xe000ed00
+
+080007a0 <Reset_Handler>:
+
+    .section  .text.Reset_Handler
+  .weak  Reset_Handler
+  .type  Reset_Handler, %function
+Reset_Handler:  
+  ldr   sp, =_estack      /* set stack pointer */
+ 80007a0:	f8df d034 	ldr.w	sp, [pc, #52]	@ 80007d8 <LoopFillZerobss+0xe>
+
+/* Call the clock system initialization function.*/
+  bl  SystemInit   
+ 80007a4:	f7ff ffea 	bl	800077c <SystemInit>
+
+/* Copy the data segment initializers from flash to SRAM */  
+  ldr r0, =_sdata
+ 80007a8:	480c      	ldr	r0, [pc, #48]	@ (80007dc <LoopFillZerobss+0x12>)
+  ldr r1, =_edata
+ 80007aa:	490d      	ldr	r1, [pc, #52]	@ (80007e0 <LoopFillZerobss+0x16>)
+  ldr r2, =_sidata
+ 80007ac:	4a0d      	ldr	r2, [pc, #52]	@ (80007e4 <LoopFillZerobss+0x1a>)
+  movs r3, #0
+ 80007ae:	2300      	movs	r3, #0
+  b LoopCopyDataInit
+ 80007b0:	e002      	b.n	80007b8 <LoopCopyDataInit>
+
+080007b2 <CopyDataInit>:
+
+CopyDataInit:
+  ldr r4, [r2, r3]
+ 80007b2:	58d4      	ldr	r4, [r2, r3]
+  str r4, [r0, r3]
+ 80007b4:	50c4      	str	r4, [r0, r3]
+  adds r3, r3, #4
+ 80007b6:	3304      	adds	r3, #4
+
+080007b8 <LoopCopyDataInit>:
+
+LoopCopyDataInit:
+  adds r4, r0, r3
+ 80007b8:	18c4      	adds	r4, r0, r3
+  cmp r4, r1
+ 80007ba:	428c      	cmp	r4, r1
+  bcc CopyDataInit
+ 80007bc:	d3f9      	bcc.n	80007b2 <CopyDataInit>
+  
+/* Zero fill the bss segment. */
+  ldr r2, =_sbss
+ 80007be:	4a0a      	ldr	r2, [pc, #40]	@ (80007e8 <LoopFillZerobss+0x1e>)
+  ldr r4, =_ebss
+ 80007c0:	4c0a      	ldr	r4, [pc, #40]	@ (80007ec <LoopFillZerobss+0x22>)
+  movs r3, #0
+ 80007c2:	2300      	movs	r3, #0
+  b LoopFillZerobss
+ 80007c4:	e001      	b.n	80007ca <LoopFillZerobss>
+
+080007c6 <FillZerobss>:
+
+FillZerobss:
+  str  r3, [r2]
+ 80007c6:	6013      	str	r3, [r2, #0]
+  adds r2, r2, #4
+ 80007c8:	3204      	adds	r2, #4
+
+080007ca <LoopFillZerobss>:
+
+LoopFillZerobss:
+  cmp r2, r4
+ 80007ca:	42a2      	cmp	r2, r4
+  bcc FillZerobss
+ 80007cc:	d3fb      	bcc.n	80007c6 <FillZerobss>
+  
+/* Call static constructors */
+    bl __libc_init_array
+ 80007ce:	f000 f82d 	bl	800082c <__libc_init_array>
+/* Call the application's entry point.*/
+  bl  main
+ 80007d2:	f7ff fefb 	bl	80005cc <main>
+  bx  lr    
+ 80007d6:	4770      	bx	lr
+  ldr   sp, =_estack      /* set stack pointer */
+ 80007d8:	20080000 	.word	0x20080000
+  ldr r0, =_sdata
+ 80007dc:	20000000 	.word	0x20000000
+  ldr r1, =_edata
+ 80007e0:	20000004 	.word	0x20000004
+  ldr r2, =_sidata
+ 80007e4:	0800090c 	.word	0x0800090c
+  ldr r2, =_sbss
+ 80007e8:	20000004 	.word	0x20000004
+  ldr r4, =_ebss
+ 80007ec:	200004dc 	.word	0x200004dc
+
+080007f0 <ADC_IRQHandler>:
+ * @retval None       
+*/
+    .section  .text.Default_Handler,"ax",%progbits
+Default_Handler:
+Infinite_Loop:
+  b  Infinite_Loop
+ 80007f0:	e7fe      	b.n	80007f0 <ADC_IRQHandler>
+	...
+
+080007f4 <HAL_IncTick>:
+ * @note This function is declared as __weak to be overwritten in case of other 
+  *      implementations in user file.
+  * @retval None
+  */
+__weak void HAL_IncTick(void)
+{
+ 80007f4:	b480      	push	{r7}
+ 80007f6:	af00      	add	r7, sp, #0
+  uwTick += uwTickFreq;
+ 80007f8:	4b06      	ldr	r3, [pc, #24]	@ (8000814 <HAL_IncTick+0x20>)
+ 80007fa:	781b      	ldrb	r3, [r3, #0]
+ 80007fc:	461a      	mov	r2, r3
+ 80007fe:	4b06      	ldr	r3, [pc, #24]	@ (8000818 <HAL_IncTick+0x24>)
+ 8000800:	681b      	ldr	r3, [r3, #0]
+ 8000802:	4413      	add	r3, r2
+ 8000804:	4a04      	ldr	r2, [pc, #16]	@ (8000818 <HAL_IncTick+0x24>)
+ 8000806:	6013      	str	r3, [r2, #0]
+}
+ 8000808:	bf00      	nop
+ 800080a:	46bd      	mov	sp, r7
+ 800080c:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8000810:	4770      	bx	lr
+ 8000812:	bf00      	nop
+ 8000814:	20000000 	.word	0x20000000
+ 8000818:	200004d8 	.word	0x200004d8
+
+0800081c <memset>:
+ 800081c:	4402      	add	r2, r0
+ 800081e:	4603      	mov	r3, r0
+ 8000820:	4293      	cmp	r3, r2
+ 8000822:	d100      	bne.n	8000826 <memset+0xa>
+ 8000824:	4770      	bx	lr
+ 8000826:	f803 1b01 	strb.w	r1, [r3], #1
+ 800082a:	e7f9      	b.n	8000820 <memset+0x4>
+
+0800082c <__libc_init_array>:
+ 800082c:	b570      	push	{r4, r5, r6, lr}
+ 800082e:	4d0d      	ldr	r5, [pc, #52]	@ (8000864 <__libc_init_array+0x38>)
+ 8000830:	4c0d      	ldr	r4, [pc, #52]	@ (8000868 <__libc_init_array+0x3c>)
+ 8000832:	1b64      	subs	r4, r4, r5
+ 8000834:	10a4      	asrs	r4, r4, #2
+ 8000836:	2600      	movs	r6, #0
+ 8000838:	42a6      	cmp	r6, r4
+ 800083a:	d109      	bne.n	8000850 <__libc_init_array+0x24>
+ 800083c:	4d0b      	ldr	r5, [pc, #44]	@ (800086c <__libc_init_array+0x40>)
+ 800083e:	4c0c      	ldr	r4, [pc, #48]	@ (8000870 <__libc_init_array+0x44>)
+ 8000840:	f000 f826 	bl	8000890 <_init>
+ 8000844:	1b64      	subs	r4, r4, r5
+ 8000846:	10a4      	asrs	r4, r4, #2
+ 8000848:	2600      	movs	r6, #0
+ 800084a:	42a6      	cmp	r6, r4
+ 800084c:	d105      	bne.n	800085a <__libc_init_array+0x2e>
+ 800084e:	bd70      	pop	{r4, r5, r6, pc}
+ 8000850:	f855 3b04 	ldr.w	r3, [r5], #4
+ 8000854:	4798      	blx	r3
+ 8000856:	3601      	adds	r6, #1
+ 8000858:	e7ee      	b.n	8000838 <__libc_init_array+0xc>
+ 800085a:	f855 3b04 	ldr.w	r3, [r5], #4
+ 800085e:	4798      	blx	r3
+ 8000860:	3601      	adds	r6, #1
+ 8000862:	e7f2      	b.n	800084a <__libc_init_array+0x1e>
+ 8000864:	08000904 	.word	0x08000904
+ 8000868:	08000904 	.word	0x08000904
+ 800086c:	08000904 	.word	0x08000904
+ 8000870:	08000908 	.word	0x08000908
+
+08000874 <memcpy>:
+ 8000874:	440a      	add	r2, r1
+ 8000876:	4291      	cmp	r1, r2
+ 8000878:	f100 33ff 	add.w	r3, r0, #4294967295
+ 800087c:	d100      	bne.n	8000880 <memcpy+0xc>
+ 800087e:	4770      	bx	lr
+ 8000880:	b510      	push	{r4, lr}
+ 8000882:	f811 4b01 	ldrb.w	r4, [r1], #1
+ 8000886:	f803 4f01 	strb.w	r4, [r3, #1]!
+ 800088a:	4291      	cmp	r1, r2
+ 800088c:	d1f9      	bne.n	8000882 <memcpy+0xe>
+ 800088e:	bd10      	pop	{r4, pc}
+
+08000890 <_init>:
+ 8000890:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000892:	bf00      	nop
+ 8000894:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8000896:	bc08      	pop	{r3}
+ 8000898:	469e      	mov	lr, r3
+ 800089a:	4770      	bx	lr
+
+0800089c <_fini>:
+ 800089c:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 800089e:	bf00      	nop
+ 80008a0:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 80008a2:	bc08      	pop	{r3}
+ 80008a4:	469e      	mov	lr, r3
+ 80008a6:	4770      	bx	lr

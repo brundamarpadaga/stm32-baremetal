@@ -1,0 +1,4 @@
+Core/Src/SEGGER_RTT.o: ../Core/Src/SEGGER_RTT.c ../RTT/SEGGER_RTT.h \
+ ../RTT/SEGGER_RTT_Conf.h
+../RTT/SEGGER_RTT.h:
+../RTT/SEGGER_RTT_Conf.h:
