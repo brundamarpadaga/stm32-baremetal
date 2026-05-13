@@ -1,2 +1,8 @@
-../Core/Src/main.c:4:6:delay	2
-../Core/Src/main.c:8:5:main	5
+../Core/Src/main.c:8:6:delay	2
+../Core/Src/main.c:12:6:I2C1_Init	1
+../Core/Src/main.c:35:9:I2C_ReadByte	12
+../Core/Src/main.c:84:9:I2C_WriteReg	10
+../Core/Src/main.c:113:9:I2C_ReadWord	15
+../Core/Src/main.c:163:10:Calculate_Lux	10
+../Core/Src/main.c:202:6:I2C_Scan	7
+../Core/Src/main.c:238:5:main	5
